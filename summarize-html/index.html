@@ -944,7 +944,33 @@ sendButton.onclick = function() {
 };
 
     </script>
-    
+  <script>document.getElementById("sendButton").onclick = function() {
+    var text = document.getElementById("userInput").value;
+    var language = document.getElementById("languageSelect").value;
+    var maxWords = document.getElementById("maxWordLength").value;
+
+    var dataToSend = {
+        'text': text,
+        'language': language,
+        'max_words': maxWords
+    };
+
+    fetch('http://localhost:5000/summarize', {  // Replace with your Flask API URL
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("summaryOutput").innerText = data.summary;
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+};
+</script> 
   <script src="js/jquery-3.4.1.min.js"></script>
   <script src="js/bootstrap.js"></script>
   <script src="js/custom.js"></script>
