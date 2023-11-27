@@ -23,7 +23,46 @@
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
 </head>
+<style>
+  /* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+</style>
 <body>
   <div class="hero_area">
     <!-- header section strats -->
@@ -103,7 +142,7 @@
                       Try for free our "Article summarizer"
                     </p>
                     <div class="btn-box">
-                      <a href="" class="btn-1">
+                      <a class="btn-1 try-now-button" href="" class="btn-1">
                         Try now
                       </a>
                       <a href="" class="btn-2">
@@ -152,9 +191,10 @@
               <a href="" class="btn-1">
                 Read More
               </a>
-              <a href="" class="btn-2">
+              <a href="" class = "btn-2" class="btn-2 try-now-button" >
                 Try now
               </a>
+        
             </div>
           </div>
         </div>
@@ -167,7 +207,19 @@
 
   <!-- category section -->
 
-  
+  <!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Enter your text:</p>
+    <textarea id="userInput" rows="4" cols="50"></textarea>
+    <button id="sendButton">Send</button>
+  </div>
+
+</div>
+
 
 
   <!-- end category section -->
@@ -508,7 +560,89 @@
   </footer>
   <!-- end  footer section -->
 
+  <script>
+    // Get all elements with the class 'try-now-button'
+    var tryNowButtons = document.getElementsByClassName("try-now-button");
 
+    // Function to open the modal
+    function openModal() {
+      modal.style.display = "block";
+    }
+
+    // Add event listener to each button
+    for (var i = 0; i < tryNowButtons.length; i++) {
+      tryNowButtons[i].addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default action (navigation)
+        openModal();
+      });
+    }
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks on the button, open the modal 
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    
+    // Get the send button and input field
+    var sendButton = document.getElementById("sendButton");
+    var userInput = document.getElementById("userInput");
+    
+    // Function to send data to your Python code
+sendButton.onclick = function() {
+    var data = userInput.value;
+    
+    // Endpoint where you're sending the data
+    var endpoint = 'https://example.com/api/send';
+
+    // Your API key
+    var yourApiKey = 'YOUR_API_KEY_HERE';
+
+    // Create an object that will be sent as JSON
+    var dataToSend = {
+        'userInput': data
+    };
+
+    // Use the fetch API to send the data
+    fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // Add your API key to the request header
+            'Authorization': 'Bearer ' + yourApiKey
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        console.log('Success:', responseData);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+};
+
+    </script>
+    
   <script src="js/jquery-3.4.1.min.js"></script>
   <script src="js/bootstrap.js"></script>
   <script src="js/custom.js"></script>
