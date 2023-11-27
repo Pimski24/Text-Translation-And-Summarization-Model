@@ -1,11 +1,12 @@
 numpy
 pandas
 sentencepiece
---upgrade -q sentencepiece
 OpenNMT-py
 sacrebleu
-nltk==3.7
-sacremoses==0.0.53
+nltk
+sacremoses
 datasets
 transformers
-torch torchvision torchaudio
+torch
+torchvision
+torchaudio
