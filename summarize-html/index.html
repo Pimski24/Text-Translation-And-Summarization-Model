@@ -14,6 +14,8 @@
 
   <title>Article summarizer</title>
 
+
+
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 
@@ -24,43 +26,173 @@
   <link href="css/responsive.css" rel="stylesheet" />
 </head>
 <style>
-  /* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+
+@import url('https://rsms.me/inter/inter.css');
+/* Text Box Style */
+:root {
+      --color-light: #1a2e35;
+      --color-dark: #ff4f5a;
+      --color-signal: #ff4f5a;
+
+      --color-background: var(--color-light);
+      --color-text: whitesmoke;
+      --color-accent: var(--color-signal);
+
+      --size-bezel: .5rem;
+      --size-radius: 4px;
+
+      line-height: 1.4;
+
+      font-family: 'Poppins', sans-serif;
+      font-size: calc(.6rem + .4vw);
+      color: white;
+      background: whitesmoke;
+      font-weight: 300;
+      padding: 0;
+    }
+
+    h1, h2, h3 {
+      font-weight: 900;
+    }
+
+    /* Button Styles */
+    #sendButton {
+      color: var(--color-text);
+      background-color: var(--color-accent); /* Use the accent color for the button background */
+      border: 3px solid var(--color-accent);
+      padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
+      font-family: 'Inter', sans-serif;
+      font-size: calc(.6rem + .4vw);
+      font-weight: 900;
+      border-radius: var(--size-radius);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #sendButton:hover {
+      background-color: darken(var(--color-accent), 10%);
+    }
+    #saveSettings {
+      color: var(--color-text);
+      background-color: var(--color-accent); /* Use the accent color for the button background */
+      border: 3px solid var(--color-accent);
+      padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
+      font-family: 'Inter', sans-serif;
+      font-size: calc(.6rem + .4vw);
+      font-weight: 900;
+      border-radius: var(--size-radius);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #saveSettings:hover {
+      background-color: darken(var(--color-accent), 10%);
+    }
+
+    .input {
+      position: relative;
+    }
+
+    .input__label {
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * .5);
+      margin: calc(var(--size-bezel) * 0.75 + 3px) calc(var(--size-bezel) * .5);
+      background: pink;
+      white-space: nowrap;
+      transform: translate(0, 0);
+      transform-origin: 0 0;
+      background: var(--color-background);
+      transition: transform 120ms ease-in;
+      font-weight: bold;
+      line-height: 1.2;
+    }
+
+    .input__field {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      border: 3px solid currentColor;
+      padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
+      color: currentColor;
+      background: transparent;
+      border-radius: var(--size-radius);
+
+      &:focus,
+      &:not(:placeholder-shown) {
+        & + .input__label {
+          transform: translate(.25rem, -65%) scale(.8);
+          color: var(--color-accent);
+        }
+      }
+    }
+/* Apply similar styles to select */
+.input__field, .input select {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  border: 3px solid currentColor;
+  padding: calc(var(--size-bezel) * 1.5) var(--size-bezel);
+  color: currentColor;
+  background: transparent;
+  border-radius: var(--size-radius);
+  /* ...other styles... */
+}
+
+/* Styles for the label */
+.input__label {
+  position: absolute;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
+  padding: calc(var(--size-bezel) * 0.75) calc(var(--size-bezel) * .5);
+  margin: calc(var(--size-bezel) * 0.75 + 3px) calc(var(--size-bezel) * .5);
+  background: pink;
+  white-space: nowrap;
+  transform: translate(0, 0);
+  transform-origin: 0 0;
+  background: var(--color-background);
+  transition: transform 120ms ease-in;
   font-weight: bold;
+  line-height: 1.2;
+  /* ...other styles... */
 }
+  /* The Modal (background) */
+  .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
+    .modal-content {
+      background-color: var(--color-background);
+      color: var(--color-text);
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 3px solid var(--color-accent);
+      width: 80%; /* Could be more or less, depending on screen size */
+      border-radius: var(--size-radius);
+    }
+
+    .close {
+      color: var(--color-accent);
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
 
 </style>
 <body>
@@ -208,15 +340,48 @@
   <!-- category section -->
 
   <!-- The Modal -->
-<div id="myModal" class="modal">
-
+ <!-- The Modal -->
+ <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close">&times;</span>
-    <p>Enter your text:</p>
-    <textarea id="userInput" rows="4" cols="50"></textarea>
+    <h1>Please enter a summary:</h1>
+    <div class="input">
+      <input type="text" class="input__field" id="userInput" placeholder=" ">
+      <label class="input__label" for="userInput">Your Text</label>
+    </div>
     <button id="sendButton">Send</button>
   </div>
+</div>
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeSettingsModal()">&times;</span>
+    <h2>Settings</h2>
+
+    <p></p>
+    <div class="input">
+      <select id="languageSelect" class="input__field">
+        <option value="en">English</option>
+        <option value="es">Dutch</option>
+        <!-- Add more languages as needed -->
+      </select>
+      <label class="input__label" for="languageSelect">Language</label>
+    </div>
+    <p></p>
+    <div class="input">
+      <input type="number" id="maxWordLength" class="input__field" min="1" placeholder=" ">
+      <label class="input__label" for="maxWordLength">Max Words</label>
+    </div>
+    <p></p>
+    <P></P>
+    <button id="saveSettings">Save</button>
+  </div>
+</div>
+
+
+
+
 
 </div>
 
@@ -561,9 +726,146 @@
   <!-- end  footer section -->
 
   <script>
-    // Get all elements with the class 'try-now-button'
-    var tryNowButtons = document.getElementsByClassName("try-now-button");
+    // Get the settings modal
+var settingsModal = document.getElementById("settingsModal");
 
+// Function to open the settings modal
+function openSettingsModal() {
+  var settingsModal = document.getElementById("settingsModal");
+  settingsModal.style.display = "block";
+}
+// Function to close the settings modal
+function closeSettingsModal() {
+  settingsModal.style.display = "none";
+}
+
+// Add event listener to the settings button
+var settingsButton = document.getElementsByClassName("btn-2")[0]; // Adjust the selector if necessary
+settingsButton.addEventListener('click', function(event) {
+  event.preventDefault(); // Prevent the default action
+  openSettingsModal();
+});
+
+// Function to open the settings modal
+function openSettingsModal() {
+  var settingsModal = document.getElementById("settingsModal");
+  settingsModal.style.display = "block";
+}
+
+// Function to close the settings modal
+function closeSettingsModal() {
+  var settingsModal = document.getElementById("settingsModal");
+  settingsModal.style.display = "none";
+}
+
+// Function to open the "Try Now" modal
+function openTryNowModal() {
+  var tryNowModal = document.getElementById("myModal");
+  tryNowModal.style.display = "block";
+}
+
+// Function to close the "Try Now" modal
+function closeTryNowModal() {
+  var tryNowModal = document.getElementById("myModal");
+  tryNowModal.style.display = "none";
+}
+
+// Add event listener to the settings button
+var settingsButton = document.getElementsByClassName("btn-2")[0];
+settingsButton.addEventListener('click', function(event) {
+  event.preventDefault();
+  openSettingsModal();
+});
+
+// Add event listener to each "Try Now" button
+var tryNowButtons = document.getElementsByClassName("try-now-button");
+for (var i = 0; i < tryNowButtons.length; i++) {
+  tryNowButtons[i].addEventListener('click', function(event) {
+    event.preventDefault();
+    openTryNowModal();
+  });
+}
+
+// Close the modal when clicking on the close button or outside the modal
+window.onclick = function(event) {
+  var tryNowModal = document.getElementById("myModal");
+  var settingsModal = document.getElementById("settingsModal");
+
+  if (event.target == tryNowModal) {
+    closeTryNowModal();
+  } else if (event.target == settingsModal) {
+    closeSettingsModal();
+  }
+}
+
+// Close button event for "Try Now" modal
+var tryNowCloseBtn = document.getElementById("myModal").getElementsByClassName("close")[0];
+tryNowCloseBtn.onclick = function() {
+  closeTryNowModal();
+}
+
+// Close button event for Settings modal
+var settingsCloseBtn = document.getElementById("settingsModal").getElementsByClassName("close")[0];
+settingsCloseBtn.onclick = function() {
+  closeSettingsModal();
+}
+
+// Example function to handle settings save
+document.getElementById("saveSettings").onclick = function() {
+  var language = document.getElementById("languageSelect").value;
+  var maxWords = document.getElementById("maxWordLength").value;
+  console.log("Settings saved: Language - " + language + ", Max Words - " + maxWords);
+  closeSettingsModal();
+};
+
+// Example function to handle settings save
+document.getElementById("saveSettings").onclick = function() {
+  var language = document.getElementById("languageSelect").value;
+  var maxWords = document.getElementById("maxWordLength").value;
+  console.log("Settings saved: Language - " + language + ", Max Words - " + maxWords);
+  // Here you can add code to handle the settings (e.g., storing them or updating other elements)
+  closeSettingsModal();
+};
+
+    // Get all elements with the class 'try-now-button'
+    function openTryNowModal() {
+      var tryNowModal = document.getElementById("myModal");
+      tryNowModal.style.display = "block";
+    }
+    var settingsButton = document.getElementsByClassName("btn-2")[0];
+settingsButton.addEventListener('click', function(event) {
+  event.preventDefault();
+  openSettingsModal();
+});
+
+// Add event listener to each "Try Now" button
+var tryNowButtons = document.getElementsByClassName("try-now-button");
+for (var i = 0; i < tryNowButtons.length; i++) {
+  tryNowButtons[i].addEventListener('click', function(event) {
+    event.preventDefault();
+    openTryNowModal();
+  });
+}
+
+// Close the modal when clicking on the close button or outside the modal
+window.onclick = function(event) {
+  var tryNowModal = document.getElementById("myModal");
+  var settingsModal = document.getElementById("settingsModal");
+
+  if (event.target == tryNowModal) {
+    tryNowModal.style.display = "none";
+  } else if (event.target == settingsModal) {
+    settingsModal.style.display = "none";
+  }
+}
+
+// Example function to handle settings save
+document.getElementById("saveSettings").onclick = function() {
+  var language = document.getElementById("languageSelect").value;
+  var maxWords = document.getElementById("maxWordLength").value;
+  console.log("Settings saved: Language - " + language + ", Max Words - " + maxWords);
+  closeSettingsModal();
+};
     // Function to open the modal
     function openModal() {
       modal.style.display = "block";
@@ -646,6 +948,20 @@ sendButton.onclick = function() {
   <script src="js/jquery-3.4.1.min.js"></script>
   <script src="js/bootstrap.js"></script>
   <script src="js/custom.js"></script>
+  <script>
+    let timer;
+  
+    document.addEventListener('input', e => {
+      const el = e.target;
+      
+      if(el.matches('[data-color]')) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          document.documentElement.style.setProperty(`--color-${el.dataset.color}`, el.value);
+        }, 100);
+      }
+    });
+  </script>
  
 
 </body>
